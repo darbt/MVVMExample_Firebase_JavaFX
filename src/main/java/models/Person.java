@@ -31,7 +31,8 @@ public class Person {
         return major;
     }
 
-    public void setMajor(String major) {
+    public void setMajor(String Major) {
+
         this.major = major;
     }
 

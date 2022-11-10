@@ -61,10 +61,14 @@ public class AccessFBView {
     @FXML
     private void addRecord(ActionEvent event) {
         addData();
+       nameField.clear();
+       majorField.clear();
+       ageField.clear();
     }
 
         @FXML
     private void readRecord(ActionEvent event) {
+        outputField.clear();
         readFirebase();
     }
     
