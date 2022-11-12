@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -31,7 +32,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import models.Person;
+
 
 public class AccessFBView implements Initializable{
 
@@ -89,6 +92,16 @@ public class AccessFBView implements Initializable{
         majorCol.setCellValueFactory(new PropertyValueFactory<>("Major"));
         ageCol.setCellValueFactory(new PropertyValueFactory<>("Age"));
     
+        tableField.setOnMousePressed(new EventHandler<MouseEvent>()
+                {
+                    @Override
+                    public void handle(MouseEvent event)
+                    {
+                        nameField.setText(tableField.getSelectionModel().getSelectedItem().getName());
+                        majorField.setText(tableField.getSelectionModel().getSelectedItem().getMajor());
+                        ageField.setText(Integer.toString(tableField.getSelectionModel().getSelectedItem().getAge()));
+                    }
+                });
         
     }
 
@@ -98,6 +111,7 @@ public class AccessFBView implements Initializable{
        nameField.clear();
        majorField.clear();
        ageField.clear();
+        readRecord(event);
     }
 
     @FXML
