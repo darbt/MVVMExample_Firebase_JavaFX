@@ -26,6 +26,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import models.Person;
 
 public class AccessFBView {
@@ -49,7 +52,9 @@ public class AccessFBView {
     public ObservableList<Person> getListOfUsers() {
         return listOfUsers;
     }
-
+    @FXML
+    private TableView tableField;
+    
     void initialize() {
 
         AccessDataViewModel accessDataViewModel = new AccessDataViewModel();
@@ -92,6 +97,7 @@ public class AccessFBView {
         ApiFuture<QuerySnapshot> future =  App.fstore.collection("References").get();
         // future.get() blocks on response
         List<QueryDocumentSnapshot> documents;
+        
         try 
         {
             documents = future.get().getDocuments();
@@ -100,6 +106,8 @@ public class AccessFBView {
                 System.out.println("Outing....");
                 for (QueryDocumentSnapshot document : documents) 
                 {
+                    tableField.setEditable(key);
+                    
                     outputField.setText(outputField.getText()+ document.getData().get("Name")+ " , Major: "+
                             document.getData().get("Major")+ " , Age: "+
                             document.getData().get("Age")+ " \n ");
@@ -108,6 +116,10 @@ public class AccessFBView {
                             document.getData().get("Major").toString(),
                             Integer.parseInt(document.getData().get("Age").toString()));
                     listOfUsers.add(person);
+                    
+                    
+                    
+                    
                 }
             }
             else
