@@ -23,44 +23,73 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.cell.PropertyValueFactory;
 import models.Person;
 
-public class AccessFBView {
+public class AccessFBView implements Initializable{
 
  
-     @FXML
+    @FXML
     private TextField nameField;
+    
     @FXML
     private TextField majorField;
+   
     @FXML
     private TextField ageField;
+    
     @FXML
     private Button writeButton;
+    
     @FXML
     private Button readButton;
+   
     @FXML
     private TextArea outputField;
      private boolean key;
+   
     private ObservableList<Person> listOfUsers = FXCollections.observableArrayList();
+   
     private Person person;
+    
     public ObservableList<Person> getListOfUsers() {
         return listOfUsers;
     }
     @FXML
-    private TableView tableField;
+    private TableView tableField = new TableView();
     
-    void initialize() {
+    
+    @FXML
+    private TableColumn<Person, String> nameCol;
 
+    @FXML
+    private TableColumn<Person, String> majorCol;
+    @FXML
+    private TableColumn<Person, Integer> ageCol;
+
+    
+    
+   
+   @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        
         AccessDataViewModel accessDataViewModel = new AccessDataViewModel();
         nameField.textProperty().bindBidirectional(accessDataViewModel.userNameProperty());
         majorField.textProperty().bindBidirectional(accessDataViewModel.userMajorProperty());
         writeButton.disableProperty().bind(accessDataViewModel.isWritePossibleProperty().not());
+        
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        majorCol.setCellValueFactory(new PropertyValueFactory<>("Major"));
+        ageCol.setCellValueFactory(new PropertyValueFactory<>("Age"));
+    
+        
     }
 
     @FXML
@@ -71,7 +100,7 @@ public class AccessFBView {
        ageField.clear();
     }
 
-        @FXML
+    @FXML
     private void readRecord(ActionEvent event) {
         outputField.clear();
         readFirebase();
@@ -106,20 +135,24 @@ public class AccessFBView {
                 System.out.println("Outing....");
                 for (QueryDocumentSnapshot document : documents) 
                 {
-                    tableField.setEditable(key);
+                     person  = new Person(
+                            String.valueOf(document.getData().get("Name")), 
+                            document.getData().get("Major").toString(),
+                            Integer.parseInt(document.getData().get("Age").toString())
+                    );
+       
+                    listOfUsers.add(person);
+        
                     
-                    outputField.setText(outputField.getText()+ document.getData().get("Name")+ " , Major: "+
+                    outputField.setText(
+                            outputField.getText()+ 
+                            document.getData().get("Name")+ " , Major: "+
                             document.getData().get("Major")+ " , Age: "+
                             document.getData().get("Age")+ " \n ");
                     System.out.println(document.getId() + " => " + document.getData().get("Name"));
-                    person  = new Person(String.valueOf(document.getData().get("Name")), 
-                            document.getData().get("Major").toString(),
-                            Integer.parseInt(document.getData().get("Age").toString()));
-                    listOfUsers.add(person);
                     
-                    
-                    
-                    
+                          
+                    tableField.setItems(listOfUsers); 
                 }
             }
             else
@@ -135,4 +168,6 @@ public class AccessFBView {
         }
         return key;
     }
+
+    
 }
