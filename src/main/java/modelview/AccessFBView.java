@@ -103,6 +103,7 @@ public class AccessFBView implements Initializable{
     @FXML
     private void readRecord(ActionEvent event) {
         outputField.clear();
+        tableField.getItems().clear();
         readFirebase();
     }
     
