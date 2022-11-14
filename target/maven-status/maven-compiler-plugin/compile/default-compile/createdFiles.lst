@@ -1,3 +1,4 @@
-com/mycompany/mvvmexample/FirestoreContext.class
 viewmodel/AccessDataViewModel.class
+com/mycompany/mvvmexample/FirestoreContext.class
 models/Person.class
+com/mycompany/mvvmexample/App.class

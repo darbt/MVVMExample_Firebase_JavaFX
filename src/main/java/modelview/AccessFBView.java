@@ -26,19 +26,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import models.Person;
 
-
 public class AccessFBView implements Initializable{
 
- 
     @FXML
     private TextField nameField;
     
@@ -97,9 +94,12 @@ public class AccessFBView implements Initializable{
                     @Override
                     public void handle(MouseEvent event)
                     {
-                        nameField.setText(tableField.getSelectionModel().getSelectedItem().getName());
-                        majorField.setText(tableField.getSelectionModel().getSelectedItem().getMajor());
-                        ageField.setText(Integer.toString(tableField.getSelectionModel().getSelectedItem().getAge()));
+                        Person p = (Person)tableField.getSelectionModel().getSelectedItem();
+                        String name = p.getName();
+                        nameField.setText(name);
+                        //nameField.setText(tableField.getSelectionModel().getSelectedItem().);
+                        //majorField.setText(tableField.getSelectionModel().getSelectedItem().getMajor());
+                        //ageField.setText(Integer.toString(tableField.getSelectionModel().getSelectedItem().getAge()));
                     }
                 });
         
